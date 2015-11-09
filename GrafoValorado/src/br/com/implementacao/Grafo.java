@@ -6,6 +6,7 @@ public class Grafo {
 
 	private class Vertice {
 		private String elemento;
+		private boolean marcado;
 
 		public Vertice(String elemento) {
 			this.elemento = elemento;
@@ -17,6 +18,14 @@ public class Grafo {
 
 		public void setElemento(String item) {
 			this.elemento = item;
+		}
+
+		public boolean isMarcado() {
+			return marcado;
+		}
+
+		public void setMarcado(boolean marcado) {
+			this.marcado = marcado;
 		}
 	}
 
@@ -95,36 +104,49 @@ public class Grafo {
 		}
 		System.out.println();
 	}
-	
+
 	public void calcular() {
-		for (int i = 0; i < matriz.length; i++) {
-			if(matriz[0][i] != 0) {
-				for (int j = 0; j < matriz.length; j++) {
-					System.out.println(matriz[i][j]);
+		int cont = 0;
+		while (cont != matriz.length) {
+			for (int linha = 0; linha < matriz.length; linha++) {
+				if (matriz[cont][linha] != 0) {
+					for (int coluna = 0; coluna < matriz.length; coluna++) {
+						if (matriz[linha][coluna] != 0) {
+							if (matriz[cont][linha] >= matriz[linha][coluna]) {
+								int valor = matriz[linha][coluna];
+								matriz[cont][coluna] = valor;
+								int sub = matriz[cont][linha] - valor;
+								matriz[cont][linha] = sub;
+								matriz[linha][coluna] = 0;
+							}
+						}
+					}
 				}
-				break;
 			}
+			cont++;
 		}
 	}
 
 	public static void main(String[] args) {
-		Grafo grafo = new Grafo(5);
-		
+		Grafo grafo = new Grafo(4);
+
 		grafo.addVertice("1");
 		grafo.addVertice("2");
 		grafo.addVertice("3");
 		grafo.addVertice("4");
-		grafo.addVertice("5");
 
-		grafo.movimentacoes("1", "2", 500);
-		grafo.movimentacoes("2", "3", 230);
-		grafo.movimentacoes("3", "4", 120);
-		grafo.movimentacoes("1", "4", 120);
-		grafo.movimentacoes("2", "5", 200);
-		
+		grafo.movimentacoes("1", "4", 500);
+		grafo.movimentacoes("4", "3", 10);
+		grafo.movimentacoes("1", "3", 200);
+		grafo.movimentacoes("1", "2", 200);
+		grafo.movimentacoes("3", "2", 300);
 		
 		grafo.showMatrix();
+		System.out.println("------------------");
 		
 		grafo.calcular();
+		
+		grafo.showMatrix();
+
 	}
 }
