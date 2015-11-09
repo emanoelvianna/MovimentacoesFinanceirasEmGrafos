@@ -112,13 +112,12 @@ public class Grafo {
 				if (matriz[cont][linha] != 0) {
 					for (int coluna = 0; coluna < matriz.length; coluna++) {
 						if (matriz[linha][coluna] != 0) {
-							if (matriz[cont][linha] >= matriz[linha][coluna]) {
-								int valor = matriz[linha][coluna];
-								matriz[cont][coluna] = valor;
-								int sub = matriz[cont][linha] - valor;
-								matriz[cont][linha] = sub;
-								matriz[linha][coluna] = 0;
-							}
+							System.out.println(matriz[linha][coluna]);
+							int valor = matriz[linha][coluna];
+							matriz[cont][coluna] = matriz[cont][coluna] + valor;
+							int sub = matriz[cont][linha] - valor;
+							matriz[cont][linha] = sub;
+							matriz[linha][coluna] = 0;
 						}
 					}
 				}
@@ -140,12 +139,12 @@ public class Grafo {
 		grafo.movimentacoes("1", "3", 200);
 		grafo.movimentacoes("1", "2", 200);
 		grafo.movimentacoes("3", "2", 300);
-		
+
 		grafo.showMatrix();
 		System.out.println("------------------");
-		
+
 		grafo.calcular();
-		
+
 		grafo.showMatrix();
 
 	}
