@@ -136,18 +136,15 @@ public class Grafo {
 	}
 
 	public static void main(String[] args) {
-		Grafo grafo = new Grafo(4);
+		Grafo grafo = new Grafo(3);
 
-		grafo.addVertice("1");
-		grafo.addVertice("2");
-		grafo.addVertice("3");
-		grafo.addVertice("4");
+		grafo.addVertice("J");
+		grafo.addVertice("A");
+		grafo.addVertice("M");
 
-		grafo.movimentacoes("1", "4", 500);
-		grafo.movimentacoes("4", "3", 10);
-		grafo.movimentacoes("1", "3", 200);
-		grafo.movimentacoes("1", "2", 200);
-		grafo.movimentacoes("3", "2", 300);
+		grafo.movimentacoes("J", "M", 20);
+		grafo.movimentacoes("M", "A", 10);
+		grafo.movimentacoes("A", "J", 5);
 
 		grafo.showMatrix();
 		System.out.println("------------------");
@@ -155,11 +152,17 @@ public class Grafo {
 		grafo.calcular();
 
 		grafo.showMatrix();
-		
+
 		grafo.calcular();
-		
+
 		System.out.println("------------------");
-		
+
+		grafo.showMatrix();
+
+		grafo.calcular();
+
+		System.out.println("------------------");
+
 		grafo.showMatrix();
 
 	}
