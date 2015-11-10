@@ -1,7 +1,6 @@
 package br.com.implementacao;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -160,69 +159,42 @@ public class Grafo {
 
 	public void lerMovimentacoes() {
 
-		BufferedReader br = null;
-
 		try {
-			String linha = "";
-			String divisor = " ";
 
-			br = new BufferedReader(new FileReader("movimentacoes.txt"));
+			BufferedReader info = new BufferedReader(new FileReader("movimentacoes.txt"));
+			String linha = info.readLine();
+			String[] tamanhoMatriz = linha.split(" ");
+			iniciaMatriz(Integer.valueOf(tamanhoMatriz[0]));
 
-			String[] info = br.readLine().split(divisor);
-			max = Integer.valueOf(info[0]);
-			
-			// inicializacao da matriz
-			matriz = new int[max][max];
-			vert = new ArrayList<Vertice>(max);
-			for (int i = 0; i < max; i++)
-				for (int j = 0; j < max; j++)
-					matriz[i][j] = 0;
-
-			while ((linha = br.readLine()) != null) {
-				info = br.readLine().split(divisor);
-				// adiciona as movimentacoes
-				try {
-					System.out.println("Olha eu aqui " + info[0]);
-					
-					
-				} catch (NumberFormatException numberFormatException) {
-
-				}
+			while (linha != null) {
+				String[] aux = linha.split(" ");
+				addVertice(aux[0]);
+				addVertice(aux[1]);
+				movimentacoes(aux[0], aux[1], Integer.valueOf(aux[2]));
+				linha = info.readLine();
 			}
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception exception) {
-			exception.printStackTrace();
-		} finally {
-
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+			System.out.println("Erro ao abrir arquivo de movimentacoes");
 		}
+	}
+
+	public void iniciaMatriz(int n) {
+		if (n <= 0)
+			throw new IllegalArgumentException("Numero de nodos invalido!");
+
+		max = n;
+		matriz = new int[max][max];
+		vert = new ArrayList<Vertice>(max);
+		// inicializacao da matriz
+		for (int i = 0; i < max; i++)
+			for (int j = 0; j < max; j++)
+				matriz[i][j] = 0;
 	}
 
 	public static void main(String[] args) {
 
 		Grafo grafo = new Grafo();
-
-		grafo.addVertice("1");
-		grafo.addVertice("2");
-		grafo.addVertice("3");
-		grafo.addVertice("4");
-		grafo.addVertice("5");
-
-		grafo.movimentacoes("1", "2", 500);
-		grafo.movimentacoes("2", "3", 230);
-		grafo.movimentacoes("3", "4", 120);
-		grafo.movimentacoes("1", "4", 120);
-		grafo.movimentacoes("2", "5", 200);
 
 		grafo.showMatrix();
 		System.out.println("------------------");
@@ -247,6 +219,9 @@ public class Grafo {
 
 		/*
 		 * Calcular descont de 1% 0,01 x valor = ??
+		 * 
+		 * uma possivel condicao de parada e analisar se pela segunde vez
+		 * seguida o ganho foi o mesmo, caso sim então deve-se parar !
 		 */
 
 	}
