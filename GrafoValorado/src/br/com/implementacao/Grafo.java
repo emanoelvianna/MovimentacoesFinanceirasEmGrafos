@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Grafo {
 
@@ -165,11 +166,11 @@ public class Grafo {
 			String linha = info.readLine();
 			String[] tamanhoMatriz = linha.split(" ");
 			iniciaMatriz(Integer.valueOf(tamanhoMatriz[0]));
-			
+
 			linha = info.readLine();
 			while (linha != null) {
 				String[] aux = linha.split(" ");
-				
+
 				addVertice(aux[0]);
 				addVertice(aux[1]);
 				movimentacoes(aux[0], aux[1], Integer.valueOf(aux[2]));
@@ -178,6 +179,16 @@ public class Grafo {
 
 		} catch (IOException e) {
 			System.out.println("Erro ao abrir arquivo de movimentacoes");
+		}
+	}
+
+	public void imprimirMovimentacoes() {
+		for (int linha = 0; linha < matriz.length; linha++) {
+			for (int coluna = 0; coluna < matriz.length; coluna++) {
+				if (matriz[linha][coluna] != 0) {
+					System.out.println(linha + " " + coluna + " " +matriz[linha][coluna]);
+				}
+			}
 		}
 	}
 
@@ -225,6 +236,7 @@ public class Grafo {
 		 * uma possivel condicao de parada e analisar se pela segunde vez
 		 * seguida o ganho foi o mesmo, caso sim então deve-se parar !
 		 */
+		grafo.imprimirMovimentacoes();
 
 	}
 }
