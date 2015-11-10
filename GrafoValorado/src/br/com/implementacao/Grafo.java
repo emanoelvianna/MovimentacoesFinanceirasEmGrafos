@@ -165,9 +165,11 @@ public class Grafo {
 			String linha = info.readLine();
 			String[] tamanhoMatriz = linha.split(" ");
 			iniciaMatriz(Integer.valueOf(tamanhoMatriz[0]));
-
+			
+			linha = info.readLine();
 			while (linha != null) {
 				String[] aux = linha.split(" ");
+				
 				addVertice(aux[0]);
 				addVertice(aux[1]);
 				movimentacoes(aux[0], aux[1], Integer.valueOf(aux[2]));
