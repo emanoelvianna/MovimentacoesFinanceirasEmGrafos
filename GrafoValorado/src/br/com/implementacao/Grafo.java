@@ -186,7 +186,7 @@ public class Grafo {
 		for (int linha = 0; linha < matriz.length; linha++) {
 			for (int coluna = 0; coluna < matriz.length; coluna++) {
 				if (matriz[linha][coluna] != 0) {
-					System.out.println(linha + " " + coluna + " " +matriz[linha][coluna]);
+					System.out.println(linha + " " + coluna + " " + matriz[linha][coluna]);
 				}
 			}
 		}
@@ -227,8 +227,6 @@ public class Grafo {
 		System.out.println("------------------");
 
 		grafo.showMatrix();
-
-		grafo.lerMovimentacoes();
 
 		/*
 		 * Calcular descont de 1% 0,01 x valor = ??
