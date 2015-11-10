@@ -1,5 +1,9 @@
 package br.com.implementacao;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Grafo {
@@ -33,17 +37,8 @@ public class Grafo {
 	private int[][] matriz;
 	private ArrayList<Vertice> vert;
 
-	public Grafo(int n) {
-		if (n <= 0)
-			throw new IllegalArgumentException("Numero de nodos invalido!");
-
-		max = n;
-		matriz = new int[max][max];
-		vert = new ArrayList<Vertice>(max);
-		// inicializacao da matriz
-		for (int i = 0; i < max; i++)
-			for (int j = 0; j < max; j++)
-				matriz[i][j] = 0;
+	public Grafo() {
+		lerMovimentacoes();
 	}
 
 	private int buscar(String item) {
@@ -105,7 +100,32 @@ public class Grafo {
 		System.out.println();
 	}
 
+	public void showInfo() {
+		System.out.print("V = { ");
+		for (int i = 0; i < max - 1; i++)
+			System.out.printf("%s, ", indice2name(i));
+		System.out.printf("%s }\n", indice2name(max - 1));
+
+		ArrayList<String> arestas = new ArrayList<String>();
+		for (int i = 0; i < max; i++)
+			for (int j = 0; j < max; j++)
+				if (matriz[i][j] != 0)
+					arestas.add(String.format("(%s, %s)", indice2name(i), indice2name(j)));
+
+		System.out.print("E = {\n");
+		if (!arestas.isEmpty()) {
+			System.out.printf("      %s", arestas.get(0));
+
+			for (int i = 1; i < arestas.size(); i++)
+				System.out.printf(",\n      %s", arestas.get(i));
+		}
+		System.out.println("\n    }");
+	}
+
 	public void calcular() {
+		double porcentagem = 0.01;
+		double ganho = 0;
+
 		int cont = 0;
 		while (cont != matriz.length) {
 			for (int linha = 0; linha < matriz.length; linha++) {
@@ -121,10 +141,12 @@ public class Grafo {
 								matriz[cont][linha] = dif;
 								matriz[cont][coluna] = matriz[cont][coluna] + tua;
 								matriz[linha][coluna] = 0;
+								ganho = minha * porcentagem;
 							} else {
 								matriz[cont][coluna] = matriz[cont][coluna] + matriz[cont][linha];
 								matriz[cont][linha] = 0;
 								matriz[linha][coluna] = matriz[linha][coluna] - minha;
+								ganho = minha * porcentagem;
 							}
 
 						}
@@ -133,18 +155,74 @@ public class Grafo {
 			}
 			cont++;
 		}
+		System.out.println("ganho: " + ganho);
+	}
+
+	public void lerMovimentacoes() {
+
+		BufferedReader br = null;
+
+		try {
+			String linha = "";
+			String divisor = " ";
+
+			br = new BufferedReader(new FileReader("movimentacoes.txt"));
+
+			String[] info = br.readLine().split(divisor);
+			max = Integer.valueOf(info[0]);
+			
+			// inicializacao da matriz
+			matriz = new int[max][max];
+			vert = new ArrayList<Vertice>(max);
+			for (int i = 0; i < max; i++)
+				for (int j = 0; j < max; j++)
+					matriz[i][j] = 0;
+
+			while ((linha = br.readLine()) != null) {
+				info = br.readLine().split(divisor);
+				// adiciona as movimentacoes
+				try {
+					System.out.println("Olha eu aqui " + info[0]);
+					
+					
+				} catch (NumberFormatException numberFormatException) {
+
+				}
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		} finally {
+
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	public static void main(String[] args) {
-		Grafo grafo = new Grafo(3);
 
-		grafo.addVertice("J");
-		grafo.addVertice("A");
-		grafo.addVertice("M");
+		Grafo grafo = new Grafo();
 
-		grafo.movimentacoes("J", "M", 20);
-		grafo.movimentacoes("M", "A", 10);
-		grafo.movimentacoes("A", "J", 5);
+		grafo.addVertice("1");
+		grafo.addVertice("2");
+		grafo.addVertice("3");
+		grafo.addVertice("4");
+		grafo.addVertice("5");
+
+		grafo.movimentacoes("1", "2", 500);
+		grafo.movimentacoes("2", "3", 230);
+		grafo.movimentacoes("3", "4", 120);
+		grafo.movimentacoes("1", "4", 120);
+		grafo.movimentacoes("2", "5", 200);
 
 		grafo.showMatrix();
 		System.out.println("------------------");
@@ -164,6 +242,12 @@ public class Grafo {
 		System.out.println("------------------");
 
 		grafo.showMatrix();
+
+		grafo.lerMovimentacoes();
+
+		/*
+		 * Calcular descont de 1% 0,01 x valor = ??
+		 */
 
 	}
 }
