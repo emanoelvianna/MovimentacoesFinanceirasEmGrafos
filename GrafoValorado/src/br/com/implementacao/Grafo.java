@@ -10,7 +10,6 @@ public class Grafo {
 
 	private class Vertice {
 		private String elemento;
-		private boolean marcado;
 
 		public Vertice(String elemento) {
 			this.elemento = elemento;
@@ -22,14 +21,6 @@ public class Grafo {
 
 		public void setElemento(String item) {
 			this.elemento = item;
-		}
-
-		public boolean isMarcado() {
-			return marcado;
-		}
-
-		public void setMarcado(boolean marcado) {
-			this.marcado = marcado;
 		}
 	}
 
@@ -122,7 +113,7 @@ public class Grafo {
 		System.out.println("\n    }");
 	}
 
-	public void calcular() {
+	public void simplificar() {
 		double porcentagem = 0.01;
 		double ganho = 0;
 
@@ -199,7 +190,7 @@ public class Grafo {
 		max = n;
 		matriz = new int[max][max];
 		vert = new ArrayList<Vertice>(max);
-		// inicializacao da matriz
+		
 		for (int i = 0; i < max; i++)
 			for (int j = 0; j < max; j++)
 				matriz[i][j] = 0;
@@ -212,17 +203,17 @@ public class Grafo {
 		grafo.showMatrix();
 		System.out.println("------------------");
 
-		grafo.calcular();
+		grafo.simplificar();
 
 		grafo.showMatrix();
 
-		grafo.calcular();
+		grafo.simplificar();
 
 		System.out.println("------------------");
 
 		grafo.showMatrix();
 
-		grafo.calcular();
+		grafo.simplificar();
 
 		System.out.println("------------------");
 
