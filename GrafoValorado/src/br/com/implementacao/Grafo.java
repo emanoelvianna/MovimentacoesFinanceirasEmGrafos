@@ -124,20 +124,20 @@ public class Grafo {
 					for (int coluna = 0; coluna < matriz.length; coluna++) {
 						if (matriz[linha][coluna] != 0) {
 
-							int minha = matriz[cont][linha];
-							int tua = matriz[linha][coluna];
+							int movimentacao1 = matriz[cont][linha];
+							int movimentacao2 = matriz[linha][coluna];
 
-							if (minha > tua) {
+							if (movimentacao1 > movimentacao2) {
 								economia += (matriz[linha][coluna] * porcentagem) / 100;
-								int dif = minha - tua;
+								int dif = movimentacao1 - movimentacao2;
 								matriz[cont][linha] = dif;
-								matriz[cont][coluna] = matriz[cont][coluna] + tua;
+								matriz[cont][coluna] = matriz[cont][coluna] + movimentacao2;
 								matriz[linha][coluna] = 0;
 							} else {
 								economia += (matriz[linha][coluna] * porcentagem) / 100;
 								matriz[cont][coluna] = matriz[cont][coluna] + matriz[cont][linha];
 								matriz[cont][linha] = 0;
-								matriz[linha][coluna] = matriz[linha][coluna] - minha;
+								matriz[linha][coluna] = matriz[linha][coluna] - movimentacao1;
 							}
 
 						}
