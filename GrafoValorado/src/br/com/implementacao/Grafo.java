@@ -27,6 +27,8 @@ public class Grafo {
 	private int max;
 	private int[][] matriz;
 	private ArrayList<Vertice> vert;
+	double economia = 0;
+	double porcentagem = 1;
 
 	public Grafo() {
 		lerMovimentacoes();
@@ -112,11 +114,8 @@ public class Grafo {
 		}
 		System.out.println("\n    }");
 	}
-	
 
 	public void simplificar() {
-		double porcentagem = 0.01;
-		double ganho = 0;
 
 		int cont = 0;
 		while (cont != matriz.length) {
@@ -129,16 +128,16 @@ public class Grafo {
 							int tua = matriz[linha][coluna];
 
 							if (minha > tua) {
+								economia += (matriz[linha][coluna] * porcentagem) / 100;
 								int dif = minha - tua;
 								matriz[cont][linha] = dif;
 								matriz[cont][coluna] = matriz[cont][coluna] + tua;
 								matriz[linha][coluna] = 0;
-								ganho = minha * porcentagem;
 							} else {
+								economia += (matriz[linha][coluna] * porcentagem) / 100;
 								matriz[cont][coluna] = matriz[cont][coluna] + matriz[cont][linha];
 								matriz[cont][linha] = 0;
 								matriz[linha][coluna] = matriz[linha][coluna] - minha;
-								ganho = minha * porcentagem;
 							}
 
 						}
@@ -147,19 +146,16 @@ public class Grafo {
 			}
 			cont++;
 		}
-		System.out.println("ganho: " + ganho);
 	}
 
 	public void lerMovimentacoes() {
 
 		try {
 
-			BufferedReader info = new BufferedReader(new FileReader("movimentacoes.txt"));
+			BufferedReader info = new BufferedReader(new FileReader("0"));
 			String linha = info.readLine();
 			String[] tamanhoMatriz = linha.split(" ");
-			System.out.println(tamanhoMatriz[0]);
-			System.out.println(tamanhoMatriz[1]);
-			
+
 			iniciaMatriz(Integer.valueOf(tamanhoMatriz[0]), Integer.valueOf(tamanhoMatriz[1]));
 
 			linha = info.readLine();
@@ -178,12 +174,20 @@ public class Grafo {
 	}
 
 	public void imprimirMovimentacoes() {
-		for (int linha = 0; linha < matriz.length; linha++) {
-			for (int coluna = 0; coluna < matriz.length; coluna++) {
-				if (matriz[linha][coluna] != 0) {
-					System.out.println(linha + " " + coluna + " " + matriz[linha][coluna]);
-				}
-			}
+		System.out.println("\n----------------------");
+		System.out.println("Economia: " + economia);
+		System.out.println("-----------saída contendo o valor total de impostos economizados---------------\n");
+		ArrayList<String> arestas = new ArrayList<String>();
+		for (int i = 0; i < matriz.length; i++)
+			for (int j = 0; j < matriz.length; j++)
+				if (matriz[i][j] != 0)
+					arestas.add(String.format("%s  %s  %d", indice2name(i), indice2name(j), matriz[i][j]));
+
+		if (!arestas.isEmpty()) {
+			System.out.printf("      %s", arestas.get(0));
+
+			for (int i = 1; i < arestas.size(); i++)
+				System.out.printf(",\n      %s", arestas.get(i));
 		}
 	}
 
@@ -194,7 +198,7 @@ public class Grafo {
 		max = tam1 * tam2;
 		matriz = new int[tam1][tam2];
 		vert = new ArrayList<Vertice>(max);
-		
+
 		for (int i = 0; i < tam1; i++)
 			for (int j = 0; j < tam2; j++)
 				matriz[i][j] = 0;
@@ -204,12 +208,8 @@ public class Grafo {
 
 		Grafo grafo = new Grafo();
 		grafo.simplificar();
-		grafo.simplificar();
-		grafo.simplificar();
-		
+
 		grafo.showMatrix();
-	
-		grafo.showInfo();
 		/*
 		 * Calcular descont de 1% 0,01 x valor = ??
 		 * 
