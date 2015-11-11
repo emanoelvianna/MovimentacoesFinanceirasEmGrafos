@@ -81,11 +81,11 @@ public class Grafo {
 	public void showMatrix() {
 		int i;
 		System.out.printf("       ");
-		for (i = 0; i < max; i++)
+		for (i = 0; i < matriz.length; i++)
 			System.out.printf("%5s", indice2name(i));
-		for (i = 0; i < max; i++) {
+		for (i = 0; i < matriz.length; i++) {
 			System.out.printf("\n%5s: ", indice2name(i));
-			for (int j = 0; j < max; j++)
+			for (int j = 0; j < matriz.length; j++)
 				System.out.printf("%5d", (matriz[i][j]));
 		}
 		System.out.println();
@@ -98,8 +98,8 @@ public class Grafo {
 		System.out.printf("%s }\n", indice2name(max - 1));
 
 		ArrayList<String> arestas = new ArrayList<String>();
-		for (int i = 0; i < max; i++)
-			for (int j = 0; j < max; j++)
+		for (int i = 0; i < matriz.length; i++)
+			for (int j = 0; j < matriz.length; j++)
 				if (matriz[i][j] != 0)
 					arestas.add(String.format("(%s, %s)", indice2name(i), indice2name(j)));
 
@@ -112,6 +112,7 @@ public class Grafo {
 		}
 		System.out.println("\n    }");
 	}
+	
 
 	public void simplificar() {
 		double porcentagem = 0.01;
@@ -153,10 +154,13 @@ public class Grafo {
 
 		try {
 
-			BufferedReader info = new BufferedReader(new FileReader("movimentacoes.txt"));
+			BufferedReader info = new BufferedReader(new FileReader("1"));
 			String linha = info.readLine();
 			String[] tamanhoMatriz = linha.split(" ");
-			iniciaMatriz(Integer.valueOf(tamanhoMatriz[0]));
+			System.out.println(tamanhoMatriz[0]);
+			System.out.println(tamanhoMatriz[1]);
+			
+			iniciaMatriz(Integer.valueOf(tamanhoMatriz[0]), Integer.valueOf(tamanhoMatriz[1]));
 
 			linha = info.readLine();
 			while (linha != null) {
@@ -183,16 +187,16 @@ public class Grafo {
 		}
 	}
 
-	public void iniciaMatriz(int n) {
-		if (n <= 0)
+	public void iniciaMatriz(int tam1, int tam2) {
+		if (tam1 <= 0 || tam2 <= 0)
 			throw new IllegalArgumentException("Numero de nodos invalido!");
 
-		max = n;
-		matriz = new int[max][max];
+		max = tam1 * tam2;
+		matriz = new int[tam1][tam2];
 		vert = new ArrayList<Vertice>(max);
 		
-		for (int i = 0; i < max; i++)
-			for (int j = 0; j < max; j++)
+		for (int i = 0; i < tam1; i++)
+			for (int j = 0; j < tam2; j++)
 				matriz[i][j] = 0;
 	}
 
@@ -218,6 +222,7 @@ public class Grafo {
 		System.out.println("------------------");
 
 		grafo.showMatrix();
+		
 
 		/*
 		 * Calcular descont de 1% 0,01 x valor = ??
