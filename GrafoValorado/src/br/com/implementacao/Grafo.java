@@ -93,9 +93,9 @@ public class Grafo {
 
 	public void showInfo() {
 		System.out.print("V = { ");
-		for (int i = 0; i < max - 1; i++)
+		for (int i = 0; i < matriz.length - 1; i++)
 			System.out.printf("%s, ", indice2name(i));
-		System.out.printf("%s }\n", indice2name(max - 1));
+		System.out.printf("%s }\n", indice2name(matriz.length - 1));
 
 		ArrayList<String> arestas = new ArrayList<String>();
 		for (int i = 0; i < matriz.length; i++)
@@ -154,7 +154,7 @@ public class Grafo {
 
 		try {
 
-			BufferedReader info = new BufferedReader(new FileReader("1"));
+			BufferedReader info = new BufferedReader(new FileReader("movimentacoes.txt"));
 			String linha = info.readLine();
 			String[] tamanhoMatriz = linha.split(" ");
 			System.out.println(tamanhoMatriz[0]);
@@ -203,27 +203,13 @@ public class Grafo {
 	public static void main(String[] args) {
 
 		Grafo grafo = new Grafo();
-
-		grafo.showMatrix();
-		System.out.println("------------------");
-
 		grafo.simplificar();
-
-		grafo.showMatrix();
-
 		grafo.simplificar();
-
-		System.out.println("------------------");
-
-		grafo.showMatrix();
-
 		grafo.simplificar();
-
-		System.out.println("------------------");
-
-		grafo.showMatrix();
 		
-
+		grafo.showMatrix();
+	
+		grafo.showInfo();
 		/*
 		 * Calcular descont de 1% 0,01 x valor = ??
 		 * 
