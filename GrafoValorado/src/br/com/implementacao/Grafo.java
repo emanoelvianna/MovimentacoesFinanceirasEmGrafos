@@ -101,7 +101,7 @@ public class Grafo {
 		for (int i = 0; i < matriz.length; i++)
 			for (int j = 0; j < matriz.length; j++)
 				if (matriz[i][j] != 0)
-					arestas.add(String.format("(%s, %s)", indice2name(i), indice2name(j)));
+					arestas.add(String.format("(%s, %s, %d)", indice2name(i), indice2name(j), matriz[i][j]));
 
 		System.out.print("E = {\n");
 		if (!arestas.isEmpty()) {
