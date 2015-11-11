@@ -33,24 +33,26 @@ public class Grafo {
 	public Grafo() {
 		lerMovimentacoes();
 	}
-
+	
+	/*
+	 * Buscar elementos 
+	 */
 	private int buscar(String item) {
 		int i, res = -1;
-		// percorre a lista de vertices para achar o elemento
 		for (i = 0; ((i < vert.size()) && !item.equals(vert.get(i).getElemento())); i++)
 			;
 
-		// se o indice
 		if (i < vert.size())
 			res = i;
 
 		return res;
 	}
-
+	
+	/*
+	 * Adicionar vertices
+	 */
 	public void addVertice(String item) {
-		// se tem espaco pra adicionar ainda
 		if (vert.size() < max) {
-			// se o vertice ainda nao foi adicionado, entao adiciona-o
 			if (buscar(item) == -1) {
 				Vertice v = new Vertice(item);
 				vert.add(v);
@@ -79,7 +81,10 @@ public class Grafo {
 			return vert.get(i).getElemento();
 		return null;
 	}
-
+	
+	/*
+	 * Imprimir a matriz
+	 */
 	public void showMatrix() {
 		int i;
 		System.out.printf("       ");
@@ -92,6 +97,10 @@ public class Grafo {
 		}
 		System.out.println();
 	}
+	
+	/*
+	 * Imprimir relações entre o grafo
+	 */
 
 	public void showInfo() {
 		System.out.print("V = { ");
@@ -114,11 +123,14 @@ public class Grafo {
 		}
 		System.out.println("\n    }");
 	}
-
-	public void simplificar() {
-
+	
+	/*
+	 * Minimizar as movimentações financeiras 
+	 */
+	public void minimizar() {
+		boolean parada = false;
 		int cont = 0;
-		while (cont != matriz.length) {
+		while (cont != matriz.length && parada != true) {
 			for (int linha = 0; linha < matriz.length; linha++) {
 				if (matriz[cont][linha] != 0) {
 					for (int coluna = 0; coluna < matriz.length; coluna++) {
@@ -148,6 +160,9 @@ public class Grafo {
 		}
 	}
 
+	/*
+	 * Ler as movimentações do arquivo 
+	 */
 	public void lerMovimentacoes() {
 
 		try {
@@ -172,7 +187,10 @@ public class Grafo {
 			System.out.println("Erro ao abrir arquivo de movimentacoes");
 		}
 	}
-
+	
+	/*
+	 * imprimir a lista de movimentos
+	 */
 	public void imprimirMovimentacoes() {
 		System.out.println("\n----------------------");
 		System.out.println("Economia: " + economia);
@@ -190,7 +208,10 @@ public class Grafo {
 				System.out.printf(",\n      %s", arestas.get(i));
 		}
 	}
-
+	
+	/*
+	 * Método auxiliar para iniciar a matriz
+	 */
 	public void iniciaMatriz(int tam1, int tam2) {
 		if (tam1 <= 0 || tam2 <= 0)
 			throw new IllegalArgumentException("Numero de nodos invalido!");
@@ -207,7 +228,7 @@ public class Grafo {
 	public static void main(String[] args) {
 
 		Grafo grafo = new Grafo();
-		grafo.simplificar();
+		grafo.minimizar();
 
 		grafo.showMatrix();
 		/*
