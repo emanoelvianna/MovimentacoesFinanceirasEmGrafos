@@ -33,13 +33,14 @@ public class Grafo {
 	public Grafo() {
 		lerMovimentacoes();
 	}
-	
+
 	/*
-	 * Buscar elementos 
+	 * Buscar elementos
 	 */
 	private int buscar(String item) {
 		int i, res = -1;
-		for (i = 0; ((i < vert.size()) && !item.equals(vert.get(i).getElemento())); i++)
+		for (i = 0; ((i < vert.size()) && !item.equals(vert.get(i)
+				.getElemento())); i++)
 			;
 
 		if (i < vert.size())
@@ -47,7 +48,7 @@ public class Grafo {
 
 		return res;
 	}
-	
+
 	/*
 	 * Adicionar vertices
 	 */
@@ -58,7 +59,8 @@ public class Grafo {
 				vert.add(v);
 			}
 		} else
-			throw new IllegalArgumentException("Capacidade do grafo atingida: " + max);
+			throw new IllegalArgumentException("Capacidade do grafo atingida: "
+					+ max);
 	}
 
 	public void movimentacoes(String strOrig, String strDest, int valor) {
@@ -68,9 +70,11 @@ public class Grafo {
 		dest = buscar(strDest);
 
 		if (orig == -1)
-			throw new IllegalArgumentException("Aresta origem invalida: " + strOrig);
+			throw new IllegalArgumentException("Aresta origem invalida: "
+					+ strOrig);
 		else if (dest == -1)
-			throw new IllegalArgumentException("Aresta destino invalida: " + strDest);
+			throw new IllegalArgumentException("Aresta destino invalida: "
+					+ strDest);
 		else {
 			matriz[orig][dest] = valor;
 		}
@@ -81,7 +85,7 @@ public class Grafo {
 			return vert.get(i).getElemento();
 		return null;
 	}
-	
+
 	/*
 	 * Imprimir a matriz
 	 */
@@ -97,9 +101,9 @@ public class Grafo {
 		}
 		System.out.println();
 	}
-	
+
 	/*
-	 * Imprimir relações entre o grafo
+	 * Imprimir relaÃ§Ãµes entre o grafo
 	 */
 
 	public void showInfo() {
@@ -112,7 +116,8 @@ public class Grafo {
 		for (int i = 0; i < matriz.length; i++)
 			for (int j = 0; j < matriz.length; j++)
 				if (matriz[i][j] != 0)
-					arestas.add(String.format("(%s, %s, %d)", indice2name(i), indice2name(j), matriz[i][j]));
+					arestas.add(String.format("(%s, %s, %d)", indice2name(i),
+							indice2name(j), matriz[i][j]));
 
 		System.out.print("E = {\n");
 		if (!arestas.isEmpty()) {
@@ -123,45 +128,54 @@ public class Grafo {
 		}
 		System.out.println("\n    }");
 	}
-	
+
 	/*
-	 * Minimizar as movimentações financeiras 
+	 * Minimizar as movimentacoes financeiras
 	 */
 	public void minimizar() {
-		boolean parada = false;
+		boolean aux = false;
 		int cont = 0;
-		while (cont != matriz.length && parada != true) {
-			for (int linha = 0; linha < matriz.length; linha++) {
-				if (matriz[cont][linha] != 0) {
-					for (int coluna = 0; coluna < matriz.length; coluna++) {
-						if (matriz[linha][coluna] != 0) {
+		do {
+			aux = false;
+			if (cont != matriz.length) {
+				for (int linha = 0; linha < matriz.length; linha++) {
+					if (matriz[cont][linha] != 0) {
+						for (int coluna = 0; coluna < matriz.length; coluna++) {
+							if (matriz[linha][coluna] != 0) {
 
-							int movimentacao1 = matriz[cont][linha];
-							int movimentacao2 = matriz[linha][coluna];
+								int movimentacao1 = matriz[cont][linha];
+								int movimentacao2 = matriz[linha][coluna];
 
-							if (movimentacao1 > movimentacao2) {
-								economia += (matriz[linha][coluna] * porcentagem) / 100;
-								int dif = movimentacao1 - movimentacao2;
-								matriz[cont][linha] = dif;
-								matriz[cont][coluna] = matriz[cont][coluna] + movimentacao2;
-								matriz[linha][coluna] = 0;
-							} else {
-								economia += (matriz[linha][coluna] * porcentagem) / 100;
-								matriz[cont][coluna] = matriz[cont][coluna] + matriz[cont][linha];
-								matriz[cont][linha] = 0;
-								matriz[linha][coluna] = matriz[linha][coluna] - movimentacao1;
+								if (movimentacao1 > movimentacao2) {
+									economia += (matriz[linha][coluna] * porcentagem) / 100;
+									int dif = movimentacao1 - movimentacao2;
+									matriz[cont][linha] = dif;
+									matriz[cont][coluna] = matriz[cont][coluna]
+											+ movimentacao2;
+									matriz[linha][coluna] = 0;
+									aux = aux || true;
+								} else {
+									economia += (matriz[linha][coluna] * porcentagem) / 100;
+									matriz[cont][coluna] = matriz[cont][coluna]
+											+ matriz[cont][linha];
+									matriz[cont][linha] = 0;
+									matriz[linha][coluna] = matriz[linha][coluna]
+											- movimentacao1;
+									aux = aux || true;
+								}
+
 							}
-
+							aux = aux || false;
 						}
 					}
 				}
+				cont++;
 			}
-			cont++;
-		}
+		}while (aux != false);
 	}
 
 	/*
-	 * Ler as movimentações do arquivo 
+	 * Ler as movimentaÃ§Ãµes do arquivo
 	 */
 	public void lerMovimentacoes() {
 
@@ -171,7 +185,8 @@ public class Grafo {
 			String linha = info.readLine();
 			String[] tamanhoMatriz = linha.split(" ");
 
-			iniciaMatriz(Integer.valueOf(tamanhoMatriz[0]), Integer.valueOf(tamanhoMatriz[1]));
+			iniciaMatriz(Integer.valueOf(tamanhoMatriz[0]),
+					Integer.valueOf(tamanhoMatriz[1]));
 
 			linha = info.readLine();
 			while (linha != null) {
@@ -187,19 +202,21 @@ public class Grafo {
 			System.out.println("Erro ao abrir arquivo de movimentacoes");
 		}
 	}
-	
+
 	/*
 	 * imprimir a lista de movimentos
 	 */
 	public void imprimirMovimentacoes() {
 		System.out.println("\n----------------------");
 		System.out.println("Economia: " + economia);
-		System.out.println("-----------saída contendo o valor total de impostos economizados---------------\n");
+		System.out
+				.println("-----------saÃ­da contendo o valor total de impostos economizados---------------\n");
 		ArrayList<String> arestas = new ArrayList<String>();
 		for (int i = 0; i < matriz.length; i++)
 			for (int j = 0; j < matriz.length; j++)
 				if (matriz[i][j] != 0)
-					arestas.add(String.format("%s  %s  %d", indice2name(i), indice2name(j), matriz[i][j]));
+					arestas.add(String.format("%s  %s  %d", indice2name(i),
+							indice2name(j), matriz[i][j]));
 
 		if (!arestas.isEmpty()) {
 			System.out.printf("      %s", arestas.get(0));
@@ -208,9 +225,9 @@ public class Grafo {
 				System.out.printf(",\n      %s", arestas.get(i));
 		}
 	}
-	
+
 	/*
-	 * Método auxiliar para iniciar a matriz
+	 * MÃ©todo auxiliar para iniciar a matriz
 	 */
 	public void iniciaMatriz(int tam1, int tam2) {
 		if (tam1 <= 0 || tam2 <= 0)
@@ -229,13 +246,14 @@ public class Grafo {
 
 		Grafo grafo = new Grafo();
 		grafo.minimizar();
+		
 
 		grafo.showMatrix();
 		/*
 		 * Calcular descont de 1% 0,01 x valor = ??
 		 * 
 		 * uma possivel condicao de parada e analisar se pela segunde vez
-		 * seguida o ganho foi o mesmo, caso sim então deve-se parar !
+		 * seguida o ganho foi o mesmo, caso sim entÃ£o deve-se parar !
 		 */
 		grafo.imprimirMovimentacoes();
 
