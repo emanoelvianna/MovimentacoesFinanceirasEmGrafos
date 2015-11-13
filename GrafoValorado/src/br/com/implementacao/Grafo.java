@@ -128,42 +128,53 @@ public class Grafo {
 	 * Minimizar as movimentacoes financeiras
 	 */
 	public void minimizar() {
-		boolean parada = false;
-		int cont = 0;
+		boolean parada;
+		int cont;
+		
 		do {
 			parada = false;
-			if (cont != matriz.length) {
-				for (int linha = 0; linha < matriz.length; linha++) {
-					if (matriz[cont][linha] != 0) {
-						for (int coluna = 0; coluna < matriz.length; coluna++) {
-							if (matriz[linha][coluna] != 0) {
-
+			cont = 0;
+			
+			if (cont != matriz.length) 
+			{
+				for (int linha = 0; linha < matriz.length; linha++) 
+				{
+					if (matriz[cont][linha] != 0) 
+					{
+						for (int coluna = 0; coluna < matriz.length; coluna++) 
+						{
+							if (matriz[linha][coluna] != 0) 
+							{
 								int movimentacao1 = matriz[cont][linha];
 								int movimentacao2 = matriz[linha][coluna];
 
-								if (movimentacao1 > movimentacao2) {
+								if (movimentacao1 > movimentacao2) 
+								{
 									economia += (matriz[linha][coluna] * porcentagem) / 100;
 									int dif = movimentacao1 - movimentacao2;
 									matriz[cont][linha] = dif;
 									if (matriz[cont][coluna] != matriz[linha][coluna])
 										matriz[cont][coluna] = matriz[cont][coluna] + movimentacao2;
 									matriz[linha][coluna] = 0;
-									parada = parada || true;
-								} else {
+									
+									parada = true;
+								} 
+								else 
+								{
 									economia += (matriz[linha][coluna] * porcentagem) / 100;
 									matriz[cont][coluna] = matriz[cont][coluna] + matriz[cont][linha];
 									matriz[cont][linha] = 0;
 									matriz[linha][coluna] = matriz[linha][coluna] - movimentacao1;
-									parada = parada || true;
+									
+									parada = true;
 								}
 							}
-						}
+						}						
 					}
-					parada = parada || false;
 				}
 				cont++;
 			}
-		} while (parada != false);
+		} while (parada == true);
 	}
 
 	/*
