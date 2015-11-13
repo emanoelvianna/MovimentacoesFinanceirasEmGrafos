@@ -39,8 +39,7 @@ public class Grafo {
 	 */
 	private int buscar(String item) {
 		int i, res = -1;
-		for (i = 0; ((i < vert.size()) && !item.equals(vert.get(i)
-				.getElemento())); i++)
+		for (i = 0; ((i < vert.size()) && !item.equals(vert.get(i).getElemento())); i++)
 			;
 
 		if (i < vert.size())
@@ -59,8 +58,7 @@ public class Grafo {
 				vert.add(v);
 			}
 		} else
-			throw new IllegalArgumentException("Capacidade do grafo atingida: "
-					+ max);
+			throw new IllegalArgumentException("Capacidade do grafo atingida: " + max);
 	}
 
 	public void movimentacoes(String strOrig, String strDest, int valor) {
@@ -70,11 +68,9 @@ public class Grafo {
 		dest = buscar(strDest);
 
 		if (orig == -1)
-			throw new IllegalArgumentException("Aresta origem invalida: "
-					+ strOrig);
+			throw new IllegalArgumentException("Aresta origem invalida: " + strOrig);
 		else if (dest == -1)
-			throw new IllegalArgumentException("Aresta destino invalida: "
-					+ strDest);
+			throw new IllegalArgumentException("Aresta destino invalida: " + strDest);
 		else {
 			matriz[orig][dest] = valor;
 		}
@@ -116,8 +112,7 @@ public class Grafo {
 		for (int i = 0; i < matriz.length; i++)
 			for (int j = 0; j < matriz.length; j++)
 				if (matriz[i][j] != 0)
-					arestas.add(String.format("(%s, %s, %d)", indice2name(i),
-							indice2name(j), matriz[i][j]));
+					arestas.add(String.format("(%s, %s, %d)", indice2name(i), indice2name(j), matriz[i][j]));
 
 		System.out.print("E = {\n");
 		if (!arestas.isEmpty()) {
@@ -133,10 +128,10 @@ public class Grafo {
 	 * Minimizar as movimentacoes financeiras
 	 */
 	public void minimizar() {
-		boolean aux = false;
+		boolean parada = false;
 		int cont = 0;
 		do {
-			aux = false;
+			parada = false;
 			if (cont != matriz.length) {
 				for (int linha = 0; linha < matriz.length; linha++) {
 					if (matriz[cont][linha] != 0) {
@@ -150,28 +145,25 @@ public class Grafo {
 									economia += (matriz[linha][coluna] * porcentagem) / 100;
 									int dif = movimentacao1 - movimentacao2;
 									matriz[cont][linha] = dif;
-									matriz[cont][coluna] = matriz[cont][coluna]
-											+ movimentacao2;
+									if (matriz[cont][coluna] != matriz[linha][coluna])
+										matriz[cont][coluna] = matriz[cont][coluna] + movimentacao2;
 									matriz[linha][coluna] = 0;
-									aux = aux || true;
+									parada = parada || true;
 								} else {
 									economia += (matriz[linha][coluna] * porcentagem) / 100;
-									matriz[cont][coluna] = matriz[cont][coluna]
-											+ matriz[cont][linha];
+									matriz[cont][coluna] = matriz[cont][coluna] + matriz[cont][linha];
 									matriz[cont][linha] = 0;
-									matriz[linha][coluna] = matriz[linha][coluna]
-											- movimentacao1;
-									aux = aux || true;
+									matriz[linha][coluna] = matriz[linha][coluna] - movimentacao1;
+									parada = parada || true;
 								}
-
 							}
-							aux = aux || false;
 						}
 					}
+					parada = parada || false;
 				}
 				cont++;
 			}
-		}while (aux != false);
+		} while (parada != false);
 	}
 
 	/*
@@ -185,15 +177,17 @@ public class Grafo {
 			String linha = info.readLine();
 			String[] tamanhoMatriz = linha.split(" ");
 
-			iniciaMatriz(Integer.valueOf(tamanhoMatriz[0]),
-					Integer.valueOf(tamanhoMatriz[1]));
+			iniciaMatriz(Integer.valueOf(tamanhoMatriz[0]), Integer.valueOf(tamanhoMatriz[1]));
 
 			linha = info.readLine();
 			while (linha != null) {
 				String[] aux = linha.split(" ");
-
-				addVertice(aux[0]);
-				addVertice(aux[1]);
+				if (buscar(aux[0]) == -1){					
+					addVertice(aux[0]);
+				}
+				if (buscar(aux[1]) == -1){					
+					addVertice(aux[1]);
+				}
 				movimentacoes(aux[0], aux[1], Integer.valueOf(aux[2]));
 				linha = info.readLine();
 			}
@@ -209,14 +203,12 @@ public class Grafo {
 	public void imprimirMovimentacoes() {
 		System.out.println("\n----------------------");
 		System.out.println("Economia: " + economia);
-		System.out
-				.println("-----------saÃ­da contendo o valor total de impostos economizados---------------\n");
+		System.out.println("-----------saida contendo o valor total de impostos economizados---------------\n");
 		ArrayList<String> arestas = new ArrayList<String>();
 		for (int i = 0; i < matriz.length; i++)
 			for (int j = 0; j < matriz.length; j++)
 				if (matriz[i][j] != 0)
-					arestas.add(String.format("%s  %s  %d", indice2name(i),
-							indice2name(j), matriz[i][j]));
+					arestas.add(String.format("%s  %s  %d", indice2name(i), indice2name(j), matriz[i][j]));
 
 		if (!arestas.isEmpty()) {
 			System.out.printf("      %s", arestas.get(0));
@@ -246,15 +238,9 @@ public class Grafo {
 
 		Grafo grafo = new Grafo();
 		grafo.minimizar();
-		
 
 		grafo.showMatrix();
-		/*
-		 * Calcular descont de 1% 0,01 x valor = ??
-		 * 
-		 * uma possivel condicao de parada e analisar se pela segunde vez
-		 * seguida o ganho foi o mesmo, caso sim entÃ£o deve-se parar !
-		 */
+
 		grafo.imprimirMovimentacoes();
 
 	}
