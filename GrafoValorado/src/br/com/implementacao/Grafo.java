@@ -99,7 +99,7 @@ public class Grafo {
 	}
 
 	/*
-	 * Imprimir relações entre o grafo
+	 * Imprimir relacoes entre o grafo
 	 */
 
 	public void showInfo() {
@@ -148,26 +148,7 @@ public class Grafo {
 								int movimentacao1 = matriz[cont][linha];
 								int movimentacao2 = matriz[linha][coluna];
 
-								if (movimentacao1 > movimentacao2) 
-								{
-									economia += (matriz[linha][coluna] * porcentagem) / 100;
-									int dif = movimentacao1 - movimentacao2;
-									matriz[cont][linha] = dif;
-									if (matriz[cont][coluna] != matriz[linha][coluna])
-										matriz[cont][coluna] = matriz[cont][coluna] + movimentacao2;
-									matriz[linha][coluna] = 0;
-									
-									parada = true;
-								} 
-								else 
-								{
-									economia += (matriz[linha][coluna] * porcentagem) / 100;
-									matriz[cont][coluna] = matriz[cont][coluna] + matriz[cont][linha];
-									matriz[cont][linha] = 0;
-									matriz[linha][coluna] = matriz[linha][coluna] - movimentacao1;
-									
-									parada = true;
-								}
+								parada = regras(movimentacao1, movimentacao2, linha, coluna, cont);
 							}
 						}						
 					}
@@ -176,9 +157,35 @@ public class Grafo {
 			}
 		} while (parada == true);
 	}
+	
+	/*
+	 * Regras criadas para a simplificacao das movimentacoes
+	 */
+	public boolean regras(int movimentacao1, int movimentacao2, int linha, int coluna, int cont) {
+		if (movimentacao1 > movimentacao2) 
+		{
+			economia += (matriz[linha][coluna] * porcentagem) / 100;
+			int dif = movimentacao1 - movimentacao2;
+			matriz[cont][linha] = dif;
+			if (matriz[cont][coluna] != matriz[linha][coluna])
+				matriz[cont][coluna] = matriz[cont][coluna] + movimentacao2;
+			matriz[linha][coluna] = 0;
+			
+			return true;
+		} 
+		else 
+		{
+			economia += (matriz[linha][coluna] * porcentagem) / 100;
+			matriz[cont][coluna] = matriz[cont][coluna] + matriz[cont][linha];
+			matriz[cont][linha] = 0;
+			matriz[linha][coluna] = matriz[linha][coluna] - movimentacao1;
+			
+			return true;
+		}
+	}
 
 	/*
-	 * Ler as movimentações do arquivo
+	 * Ler as movimentacoes do arquivo
 	 */
 	public void lerMovimentacoes() {
 
@@ -230,7 +237,7 @@ public class Grafo {
 	}
 
 	/*
-	 * Método auxiliar para iniciar a matriz
+	 * metodo auxiliar para iniciar a matriz
 	 */
 	public void iniciaMatriz(int tam1, int tam2) {
 		if (tam1 <= 0 || tam2 <= 0)
