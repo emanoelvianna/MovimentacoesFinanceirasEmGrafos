@@ -160,21 +160,32 @@ public class Grafo {
 	}
 
 	public boolean regras(int movimentacao1, int movimentacao2, int coluna, int linha, int cont) {
-		if (movimentacao1 > movimentacao2) {
+		if (movimentacao1 >= movimentacao2) {
+			
 			economia += (matriz[linha][coluna] * porcentagem) / 100;
+			
 			int dif = movimentacao1 - movimentacao2;
+			
 			matriz[cont][linha] = dif;
-			matriz[cont][coluna] = matriz[cont][coluna]
+			
+			matriz[cont][coluna] += matriz[cont][coluna]
 					+ movimentacao2;
+			
 			matriz[linha][coluna] = 0;
+			
 			return true;
 		} else {
+			
 			economia += (matriz[linha][coluna] * porcentagem) / 100;
-			matriz[cont][coluna] = matriz[cont][coluna]
+			
+			matriz[cont][coluna] += matriz[cont][coluna]
 					+ matriz[cont][linha];
+			
 			matriz[cont][linha] = 0;
+			
 			matriz[linha][coluna] = matriz[linha][coluna]
 					- movimentacao1;
+			
 			return true;
 		}
 	}
@@ -187,7 +198,7 @@ public class Grafo {
 
 		try {
 
-			BufferedReader info = new BufferedReader(new FileReader("0"));
+			BufferedReader info = new BufferedReader(new FileReader("3"));
 			String linha = info.readLine();
 			String[] tamanhoMatriz = linha.split(" ");
 
@@ -201,6 +212,7 @@ public class Grafo {
 				addVertice(aux[0]);
 				addVertice(aux[1]);
 				movimentacoes(aux[0], aux[1], Integer.valueOf(aux[2]));
+				//System.out.println(aux[0] + " " + aux[1] + " " + aux[2] );
 				linha = info.readLine();
 			}
 
@@ -227,8 +239,8 @@ public class Grafo {
 		if (!arestas.isEmpty()) {
 			System.out.printf("      %s", arestas.get(0));
 
-			for (int i = 1; i < arestas.size(); i++)
-				System.out.printf(",\n      %s", arestas.get(i));
+			//for (int i = 1; i < arestas.size(); i++)
+			//	System.out.printf(",\n      %s", arestas.get(i));
 		}
 	}
 
