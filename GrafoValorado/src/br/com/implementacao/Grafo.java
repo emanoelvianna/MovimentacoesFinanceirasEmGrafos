@@ -30,6 +30,8 @@ public class Grafo {
 	double economia = 0;
 	double porcentagem = 1;
 
+	long tempoInicial = System.currentTimeMillis();
+
 	public Grafo() {
 		lerMovimentacoes();
 	}
@@ -76,7 +78,7 @@ public class Grafo {
 			throw new IllegalArgumentException("Aresta destino invalida: "
 					+ strDest);
 		else {
-			matriz[orig][dest] = valor;
+			matriz[orig][dest] += valor;
 		}
 	}
 
@@ -103,7 +105,7 @@ public class Grafo {
 	}
 
 	/*
-	 * Imprimir relações entre o grafo
+	 * Imprimir relaÃ§Ãµes entre o grafo
 	 */
 
 	public void showInfo() {
@@ -134,11 +136,12 @@ public class Grafo {
 	 */
 	public void minimizar() {
 		boolean parada;
-		int cont;
-		
+
 		do {
 			parada = false;
-			cont = 0;
+			
+			for(int cont = 0; cont < matriz.length; cont++) {
+
 			if (cont != matriz.length) {
 				for (int linha = 0; linha < matriz.length; linha++) {
 					if (matriz[cont][linha] != 0) {
@@ -148,51 +151,46 @@ public class Grafo {
 								int movimentacao1 = matriz[cont][linha];
 								int movimentacao2 = matriz[linha][coluna];
 
-								parada = regras(movimentacao1, movimentacao2, coluna, linha, cont);
+								parada = regras(movimentacao1, movimentacao2,
+										coluna, linha, cont);
 
 							}
 						}
 					}
 				}
-				cont++;
 			}
-		}while (parada == true);
+			}
+		} while (parada == true);
 	}
 
-	public boolean regras(int movimentacao1, int movimentacao2, int coluna, int linha, int cont) {
+	public boolean regras(int movimentacao1, int movimentacao2, int coluna,
+			int linha, int cont) {
 		if (movimentacao1 >= movimentacao2) {
-			
-			economia += (matriz[linha][coluna] * porcentagem) / 100;
-			
+
+			economia += (movimentacao1 * porcentagem) / 100;
+
 			int dif = movimentacao1 - movimentacao2;
-			
+			//System.out.println(matriz[cont][linha]);
 			matriz[cont][linha] = dif;
 			
-			matriz[cont][coluna] += matriz[cont][coluna]
-					+ movimentacao2;
-			
+			matriz[cont][coluna] = matriz[cont][coluna] + movimentacao2;
 			matriz[linha][coluna] = 0;
-			
+
 			return true;
 		} else {
+
+			int dif = movimentacao2 - movimentacao1;
+			economia += (movimentacao1 * porcentagem) / 100;
 			
-			economia += (matriz[linha][coluna] * porcentagem) / 100;
-			
-			matriz[cont][coluna] += matriz[cont][coluna]
-					+ matriz[cont][linha];
-			
+			matriz[linha][coluna] = dif;
 			matriz[cont][linha] = 0;
-			
-			matriz[linha][coluna] = matriz[linha][coluna]
-					- movimentacao1;
 			
 			return true;
 		}
 	}
-	
-	
+
 	/*
-	 * Ler as movimentações do arquivo
+	 * Ler as movimentacoes do arquivo
 	 */
 	public void lerMovimentacoes() {
 
@@ -211,8 +209,10 @@ public class Grafo {
 
 				addVertice(aux[0]);
 				addVertice(aux[1]);
+				//System.out.println(Integer.valueOf(aux[2]));
+				
 				movimentacoes(aux[0], aux[1], Integer.valueOf(aux[2]));
-				//System.out.println(aux[0] + " " + aux[1] + " " + aux[2] );
+				
 				linha = info.readLine();
 			}
 
@@ -228,7 +228,7 @@ public class Grafo {
 		System.out.println("\n----------------------");
 		System.out.println("Economia: " + economia);
 		System.out
-				.println("-----------saída contendo o valor total de impostos economizados---------------\n");
+				.println("-----------saÃ­da contendo o valor total de impostos economizados---------------\n");
 		ArrayList<String> arestas = new ArrayList<String>();
 		for (int i = 0; i < matriz.length; i++)
 			for (int j = 0; j < matriz.length; j++)
@@ -240,12 +240,15 @@ public class Grafo {
 			System.out.printf("      %s", arestas.get(0));
 
 			//for (int i = 1; i < arestas.size(); i++)
-			//	System.out.printf(",\n      %s", arestas.get(i));
+			//System.out.printf(",\n      %s", arestas.get(i));
+
+			System.out.println("\n\no metodo executou em "
+					+ (System.currentTimeMillis() - tempoInicial));
 		}
 	}
 
 	/*
-	 * Método auxiliar para iniciar a matriz
+	 * Metodo auxiliar para iniciar a matriz
 	 */
 	public void iniciaMatriz(int tam1, int tam2) {
 		if (tam1 <= 0 || tam2 <= 0)
@@ -255,25 +258,39 @@ public class Grafo {
 		matriz = new int[tam1][tam2];
 		vert = new ArrayList<Vertice>(max);
 
-		for (int i = 0; i < tam1; i++)
-			for (int j = 0; j < tam2; j++)
-				matriz[i][j] = 0;
+	}
+
+	public int somaElementosNaMatriz() {
+		int contador = 0;
+		for (int i = 0; i < matriz.length; i++) {
+			for (int j = 0; j < matriz.length; j++) {
+				contador += matriz[i][j];
+			}
+		}
+		return contador;
+
 	}
 
 	public static void main(String[] args) {
 
 		Grafo grafo = new Grafo();
-		grafo.minimizar();
-		
 
-		grafo.showMatrix();
+		System.out.println("Soma dos elementos antes: "
+				+ grafo.somaElementosNaMatriz());
+
+		grafo.minimizar();
+
+		//grafo.showMatrix();
 		/*
 		 * Calcular descont de 1% 0,01 x valor = ??
 		 * 
 		 * uma possivel condicao de parada e analisar se pela segunde vez
-		 * seguida o ganho foi o mesmo, caso sim então deve-se parar !
+		 * seguida o ganho foi o mesmo, caso sim entÃ£o deve-se parar !
 		 */
 		grafo.imprimirMovimentacoes();
+
+		System.out.println("Soma dos elementos apos: "
+				+ grafo.somaElementosNaMatriz());
 
 	}
 }
