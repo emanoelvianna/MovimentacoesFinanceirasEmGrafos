@@ -141,7 +141,8 @@ public class Grafo {
 			parada = false;
 			
 			for(int cont = 0; cont < matriz.length; cont++) {
-
+				
+			
 			if (cont != matriz.length) {
 				for (int linha = 0; linha < matriz.length; linha++) {
 					if (matriz[cont][linha] != 0) {
@@ -190,7 +191,7 @@ public class Grafo {
 	}
 
 	/*
-	 * Ler as movimentacoes do arquivo
+	 * Ler as movimentaÃ§Ãµes do arquivo
 	 */
 	public void lerMovimentacoes() {
 
@@ -248,7 +249,7 @@ public class Grafo {
 	}
 
 	/*
-	 * Metodo auxiliar para iniciar a matriz
+	 * MÃ©todo auxiliar para iniciar a matriz
 	 */
 	public void iniciaMatriz(int tam1, int tam2) {
 		if (tam1 <= 0 || tam2 <= 0)
@@ -281,12 +282,7 @@ public class Grafo {
 		grafo.minimizar();
 
 		//grafo.showMatrix();
-		/*
-		 * Calcular descont de 1% 0,01 x valor = ??
-		 * 
-		 * uma possivel condicao de parada e analisar se pela segunde vez
-		 * seguida o ganho foi o mesmo, caso sim entÃ£o deve-se parar !
-		 */
+		
 		grafo.imprimirMovimentacoes();
 
 		System.out.println("Soma dos elementos apos: "
