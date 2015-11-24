@@ -1,4 +1,10 @@
-3 3 
-J M 20
-M A 10
-A J 5
+6 6 
+A B 10 
+B F 50
+B C 30
+C D 20
+C E 5
+E B 10
+E D 8
+D F 10
+F A 30
