@@ -7,7 +7,10 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.Locale;
+=======
+>>>>>>> 063fb19f3b7fb9516aba7b4675f27c0810132fb5
 
 public class Grafo {
 
@@ -32,8 +35,13 @@ public class Grafo {
 	private ArrayList<Vertice> vert;
 	float economia = 0;
 	double porcentagem = 1;
+<<<<<<< HEAD
 	private double valorTotal;
 	private double valor;
+=======
+	private float valorTotal;
+	private float valor;
+>>>>>>> 063fb19f3b7fb9516aba7b4675f27c0810132fb5
 
 	long tempoInicial = System.currentTimeMillis();
 
@@ -46,7 +54,8 @@ public class Grafo {
 	 */
 	private int buscar(String item) {
 		int i, res = -1;
-		for (i = 0; ((i < vert.size()) && !item.equals(vert.get(i).getElemento())); i++)
+		for (i = 0; ((i < vert.size()) && !item.equals(vert.get(i)
+				.getElemento())); i++)
 			;
 
 		if (i < vert.size())
@@ -65,7 +74,8 @@ public class Grafo {
 				vert.add(v);
 			}
 		} else
-			throw new IllegalArgumentException("Capacidade do grafo atingida: " + max);
+			throw new IllegalArgumentException("Capacidade do grafo atingida: "
+					+ max);
 	}
 
 	public void movimentacoes(String strOrig, String strDest, int valor) {
@@ -75,9 +85,11 @@ public class Grafo {
 		dest = buscar(strDest);
 
 		if (orig == -1)
-			throw new IllegalArgumentException("Aresta origem invalida: " + strOrig);
+			throw new IllegalArgumentException("Aresta origem invalida: "
+					+ strOrig);
 		else if (dest == -1)
-			throw new IllegalArgumentException("Aresta destino invalida: " + strDest);
+			throw new IllegalArgumentException("Aresta destino invalida: "
+					+ strDest);
 		else {
 			matriz[orig][dest] += valor;
 			valorTotal += valor;
@@ -120,7 +132,8 @@ public class Grafo {
 		for (int i = 0; i < matriz.length; i++)
 			for (int j = 0; j < matriz.length; j++)
 				if (matriz[i][j] != 0)
-					arestas.add(String.format("(%s, %s, %d)", indice2name(i), indice2name(j), matriz[i][j]));
+					arestas.add(String.format("(%s, %s, %d)", indice2name(i),
+							indice2name(j), matriz[i][j]));
 
 		System.out.print("E = {\n");
 		if (!arestas.isEmpty()) {
@@ -152,7 +165,15 @@ public class Grafo {
 									int movimentacao1 = matriz[cont][linha];
 									int movimentacao2 = matriz[linha][coluna];
 									if (movimentacao1 != 0) {
+<<<<<<< HEAD
 										parada = regras(movimentacao1, movimentacao2, coluna, linha, cont);
+=======
+										parada = regras(movimentacao1,
+												movimentacao2, coluna, linha,
+												cont);
+										// showmatriz();
+										//System.out.println("\n");
+>>>>>>> 063fb19f3b7fb9516aba7b4675f27c0810132fb5
 									}
 								}
 							}
@@ -163,7 +184,8 @@ public class Grafo {
 		} while (parada == true);
 	}
 
-	public boolean regras(int movimentacao1, int movimentacao2, int coluna, int linha, int cont) {
+	public boolean regras(int movimentacao1, int movimentacao2, int coluna,
+			int linha, int cont) {
 		if (movimentacao1 >= movimentacao2) {
 			economia(movimentacao1);
 			int dif = movimentacao1 - movimentacao2;
@@ -206,13 +228,21 @@ public class Grafo {
 
 	}
 
+<<<<<<< HEAD
 	public double getEconomia() {
+=======
+	public float getEconomia() {
+>>>>>>> 063fb19f3b7fb9516aba7b4675f27c0810132fb5
 
 		return valorTotal - valor;
 
 	}
 
+<<<<<<< HEAD
 	public double getValor() {
+=======
+	public float getValor() {
+>>>>>>> 063fb19f3b7fb9516aba7b4675f27c0810132fb5
 
 		return valorTotal;
 	}
@@ -224,11 +254,16 @@ public class Grafo {
 
 		try {
 
+<<<<<<< HEAD
 			BufferedReader info = new BufferedReader(new FileReader("arquivoTeste1"));
+=======
+			BufferedReader info = new BufferedReader(new FileReader("7"));
+>>>>>>> 063fb19f3b7fb9516aba7b4675f27c0810132fb5
 			String linha = info.readLine();
 			String[] tamanhoMatriz = linha.split(" ");
 
-			iniciaMatriz(Integer.valueOf(tamanhoMatriz[0]), Integer.valueOf(tamanhoMatriz[1]));
+			iniciaMatriz(Integer.valueOf(tamanhoMatriz[0]),
+					Integer.valueOf(tamanhoMatriz[1]));
 
 			linha = info.readLine();
 			while (linha != null) {
@@ -251,19 +286,31 @@ public class Grafo {
 	 * imprimir a lista de movimentos
 	 */
 	public void imprimirMovimentacoes() {
+<<<<<<< HEAD
+=======
+		System.out.println("\n----------------------");
+		System.out.println("Economia: " + economia);
+		System.out
+				.println("-----------saÃ­da contendo o valor total de impostos economizados---------------\n");
+>>>>>>> 063fb19f3b7fb9516aba7b4675f27c0810132fb5
 		ArrayList<String> arestas = new ArrayList<String>();
 		for (int i = 0; i < matriz.length; i++)
 			for (int j = 0; j < matriz.length; j++)
 				if (matriz[i][j] != 0)
-					arestas.add(String.format("%s  %s  %d", indice2name(i), indice2name(j), matriz[i][j]));
+					arestas.add(String.format("%s  %s  %d", indice2name(i),
+							indice2name(j), matriz[i][j]));
 
 		if (!arestas.isEmpty()) {
-			System.out.printf("      %s", arestas.get(0));
+			//System.out.printf("      %s", arestas.get(0));
 
-			for (int i = 1; i < arestas.size(); i++)
-				System.out.printf(",\n      %s", arestas.get(i));
+			//for (int i = 1; i < arestas.size(); i++)
+				//System.out.printf(",\n      %s", arestas.get(i));
 
+<<<<<<< HEAD
 			System.out.println("\n\no metodo executou em " + (System.currentTimeMillis() - tempoInicial) + " milissegundo");
+=======
+			//System.out.println("\n\no metodo executou em " + (System.currentTimeMillis() - tempoInicial));
+>>>>>>> 063fb19f3b7fb9516aba7b4675f27c0810132fb5
 		}
 	}
 
@@ -295,19 +342,37 @@ public class Grafo {
 
 		Grafo grafo = new Grafo();
 
+<<<<<<< HEAD
 		grafo.minimizar();
 		grafo.calcula();
 		
+=======
+		System.out.println("Soma dos elementos antes: "
+				+ grafo.somaElementosNaMatriz());
+		System.out.println("Valor somado" + grafo.getValor());
+
+		grafo.minimizar();
+		grafo.calcula();
+		// grafo.showmatriz();
+		System.out.println("Economia2: " + grafo.getEconomia());
+
+>>>>>>> 063fb19f3b7fb9516aba7b4675f27c0810132fb5
 		grafo.imprimirMovimentacoes();
 		
 		// Formata o resultado
 		NumberFormat nf = new DecimalFormat ("#,##0.00", new DecimalFormatSymbols (new Locale ("pt", "BR"))); 
 		
 
+<<<<<<< HEAD
 		System.out.println("\n----------------------");
 		System.out.println("Economia: " + grafo.getEconomia());
 		System.out.println("----------------------\n");
 		System.out.println(("Economia formatada: " + nf.format (grafo.getEconomia() / 100))); 
 		System.out.println("----------------------\n");
+=======
+		System.out.println("Soma dos elementos apos: "
+				+ grafo.somaElementosNaMatriz());
+
+>>>>>>> 063fb19f3b7fb9516aba7b4675f27c0810132fb5
 	}
 }
